@@ -8,8 +8,8 @@
 
     <insert id="insertAddress"
             parameterType="java.util.Map" >
-        insert into dfs_address(address)
-        values(#{address,jdbcType=VARCHAR})
+        insert into dfs_address(address,create_time)
+        values(#{address,jdbcType=VARCHAR},#{createTime})
     </insert>
 
     <!--<select id="selectAll" resultMap="BaseMapper">-->

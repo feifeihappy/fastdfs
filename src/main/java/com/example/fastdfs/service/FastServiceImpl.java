@@ -1,40 +1,52 @@
 package com.example.fastdfs.service;
 
 import com.example.fastdfs.dao.FDSAddressMapper;
-import com.example.fastdfs.module.User;
+import com.example.fastdfs.utils.FastDFSUtils;
 import com.github.tobato.fastdfs.domain.StorePath;
-import com.github.tobato.fastdfs.service.FastFileStorageClient;
-import lombok.extern.log4j.Log4j;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sun.deploy.association.utility.AppConstants;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Component
 public class FastServiceImpl {
 
-    @Autowired
-    private FastFileStorageClient storageClient;
     @Resource
     private FDSAddressMapper fdsAddressMapper;
+    @Resource
+    private FastDFSUtils fastDFSUtils;
 
-    public String uploadFile(MultipartFile file) throws IOException {
-        StorePath storePath = storageClient.uploadFile(file.getInputStream(), file.getSize(), FilenameUtils.getExtension(file.getOriginalFilename()), null);
-        String fileUrl = "http://45.32.64.33:8000" + "/" + storePath.getFullPath();
+    @Value("${fdfsurl.url}")
+    String fastdfsUrl;
+
+    public String uploadFile(MultipartFile file)  {
+        StorePath storePath = fastDFSUtils.getStorePath(file);
+        String fileUrl = fastdfsUrl + "/" + storePath.getFullPath();
         if (!StringUtils.isEmpty(fileUrl)){
             Map<String, Object> map = new HashMap<>();
             map.put("address", fileUrl);
+            map.put("createTime", new Date());
             fdsAddressMapper.insertAddress(map);
         }
         return fileUrl;
     }
+
+
+
+    public void deleteFile(String file) {
+        fastDFSUtils.deleteFile(file);
+
+    }
+
+
 
 
 }
