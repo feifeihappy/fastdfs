@@ -24,11 +24,12 @@ public class FastController {
 
     /**
      * 上传单个文件
+     *
      * @param file
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload", consumes = "multipart/form-data", method = RequestMethod.POST)
     public String upload(@RequestParam MultipartFile file) throws Exception {
         String fileUrl = null;
         try {
@@ -43,18 +44,19 @@ public class FastController {
 
     /**
      * 上传多个文件
+     *
      * @param files
      * @return
      */
-    @RequestMapping(value = "/uploadList",method = RequestMethod.POST)
+    @RequestMapping(value = "/uploadList", consumes = "multipart/form-data", method = RequestMethod.POST)
     public String addUser(@RequestParam MultipartFile[] files) {
         StringBuilder result = null;
         try {
-             result = new StringBuilder();
+            result = new StringBuilder();
             for (int i = 0; i < files.length; i++) {
                 String fileUrl = fastService.uploadFile(files[i]);
                 result.append(fileUrl);
-                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,15 +66,15 @@ public class FastController {
     }
 
 
-   /**
-   * @Description: 删除文件
-   * @Author: zhaopf@mti-sh.cn
-   * @Date: 2019/5/21 11:04
-   */
+    /**
+     * @Description: 删除文件
+     * @Author: zhaopf@mti-sh.cn
+     * @Date: 2019/5/21 11:04
+     */
     @RequestMapping(value = "/deleteFile", method = RequestMethod.GET)
     public void deleteFile(@RequestParam String file) {
         try {
-           fastService.deleteFile(file);
+            fastService.deleteFile(file);
         } catch (Exception e) {
             log.error(e.getMessage());
 

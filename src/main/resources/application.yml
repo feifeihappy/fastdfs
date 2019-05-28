@@ -1,21 +1,17 @@
-
 #公共配置
 spring:
-  profiles:
-    active: test
+  # http请求文件大小限制
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 300MB
+  #      context-path: /command-web
   datasource:
     url: jdbc:postgresql://45.32.64.33:5432/postgres?useSSL=false&allowMultiQueries=true #主机地址:端口（一般是5432）/数据库名字
     username: root
     password: 123456
     driver-class-name: org.postgresql.Driver
   autoconfigure:
-
-# http请求文件大小限制
-  servlet:
-      multipart:
-        max-file-size: 100MB
-        max-request-size: 300MB
-
 
 mybatis:
   mapper-locations: classpath:/mapper/*.xml
@@ -31,3 +27,6 @@ fdfs:
   tracker-list: 45.32.64.33:22122  #tracker路径，TrackerList参数,支持多个
 fdfsurl:
   url: http://45.32.64.33:8000
+
+server:
+  port: 8081
