@@ -19,6 +19,9 @@ public class TestController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String upload() {
         log.info("请求成功");
+        String[] strings = {"1","2"};
+        String s = strings[3];
+
         return "请求成功";
     }
 
