@@ -12,7 +12,16 @@ spring:
     password: 123456
     driver-class-name: org.postgresql.Driver
   autoconfigure:
-
+  main:
+    allow-bean-definition-overriding: true
+  jpa:
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+    show-sql: true    #显示sql
+    hibernate:
+      ddl-auto: update  #第一次加载hibernate时根据model类会自动建立起表的结构（前提是先建立好数据库），以后加载hibernate时根据 model类自动更新表结构
 mybatis:
   mapper-locations: classpath:/mapper/*.xml
   type-aliases-package: com.example.fastdfs.dao
